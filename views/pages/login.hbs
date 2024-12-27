@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Full-screen Background with Blur */
+        body {
+            background-image: url('https://pixy.org/src2/595/5953111.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            color: white;
+            position: relative;
+            min-height: 100vh; /* Ensure it covers full height */
+            margin: 0;
+        }
+
+        body::before {
+            content: "";
+            position: fixed; /* Fixed positioning to cover the entire screen */
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: inherit;
+            background-size: inherit;
+            background-position: inherit;
+            background-attachment: inherit;
+            background-repeat: inherit;
+            filter: blur(8px);
+            z-index: -1;
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
+            border: none;
+            border-radius: 10px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        a {
+            color: #198754;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h1 class="text-center mb-4">Login</h1>
+
+                        <!-- Display error message if it exists -->
+                        {{#if error}}
+                            <div class="alert alert-danger" role="alert">
+                                {{error}}
+                            </div>
+                        {{/if}}
+
+                        <!-- Login Form -->
+                        <form method="POST" action="/login">
+                            <!-- Username Field -->
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Username</label>
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="username" 
+                                    name="username" 
+                                    placeholder="Enter your username" 
+                                    required>
+                            </div>
+
+                            <!-- Password Field -->
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input 
+                                    type="password" 
+                                    class="form-control" 
+                                    id="password" 
+                                    name="password" 
+                                    placeholder="Enter your password" 
+                                    required>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-success">Login</button>
+                            </div>
+                        </form>
+                        <p class="text-center mt-3">
+                            Don’t have an account? <a href="/signup" class="text-decoration-none">Sign Up</a>
+                        </p>
+                    </div>
+                </div>
+
+                

@@ -1,0 +1,102 @@
+### Search teams by name
+GET http://localhost:3000/api/teams/search?name=Barcelona
+Authorization: Bearer <your_token>
+
+###
+
+### Search leagues by team
+GET http://localhost:3000/api/leagues/search?teamId=Barcelona
+Authorization: Bearer <your_token>
+
+### Search team details by name
+
+GET http://localhost:3000/api/teams/details?name=Barcelona
+
+
+###
+
+### Create a new group
+POST http://localhost:3000/api/groups
+Content-Type: application/json
+Authorization: Bearer ec4342c0-a31b-4cfd-8ee2-6618e2c76b6c
+
+{
+  "name": "My Favorite Teams",
+  "description": "Group for my favorite football teams."
+}
+
+###
+
+### Delete a group
+DELETE http://localhost:3000/api/groups/group-1734702524639
+Authorization: Bearer ec4342c0-a31b-4cfd-8ee2-6618e2c76b6c
+
+###
+
+### Add a Team to a Group
+POST http://localhost:3000/api/groups/group-1734702536516/teams
+Authorization: Bearer ec4342c0-a31b-4cfd-8ee2-6618e2c76b6c
+Content-Type: application/json
+
+{
+  "teamId": 33,     
+  "leagueId": 140,    
+  "season": 2023
+}
+
+### delete team
+
+DELETE http://localhost:3000/api/groups/group-1734702536516/teams/33
+Authorization: Bearer ec4342c0-a31b-4cfd-8ee2-6618e2c76b6c
+
+###
+
+### List all groups
+GET http://localhost:3000/api/groups
+Authorization: Bearer ec4342c0-a31b-4cfd-8ee2-6618e2c76b6c
+
+###
+
+### edit Groups
+PUT http://localhost:3000/api/groups/group-1734702524639
+Authorization: Bearer ec4342c0-a31b-4cfd-8ee2-6618e2c76b6c
+Content-Type: application/json
+
+{
+    "name": "Updated Group Name",
+    "description": "Updated group description."
+}
+
+###
+
+### Get group details
+GET http://localhost:3000/api/groups/group-1734698162016
+Authorization: Bearer 3d3b46c4-323d-4033-bcfb-56e288d54fa6
+
+###
+
+### Create a new user
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+  "username": "Test User123"
+}
+
+
+###
+{
+  "name": "Test User",
+  "userId": "cebff989-5368-4072-a26b-a6f5ed75fd1b"
+}
+###
+{
+  "name": "Test User1",
+  "userId": "6b29e314-03f1-44a1-89be-c8f8652118e0"
+}
+
+###
+{
+  "username": "Test User123",
+  "token": "3d3b46c4-323d-4033-bcfb-56e288d54fa6"
+}

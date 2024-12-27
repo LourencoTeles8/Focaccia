@@ -1,0 +1,122 @@
+
+### criar index groups(base de dados groups)
+PUT http://localhost:9200/groups
+Content-Type: application/json
+
+{
+  "mappings": {
+    "properties": {
+      "id": { "type": "keyword" },
+      "name": { "type": "text" },
+      "description": { "type": "text" },
+      "token": { "type": "keyword" },
+      "teams": {
+        "type": "nested",
+        "properties": {
+          "teamId": { "type": "keyword" },
+          "teamName": { "type": "text" },
+          "stadiumName": { "type": "text" },
+          "leagueName": { "type": "text" },
+          "season": { "type": "integer" }
+        }
+      }
+    }
+  }
+}
+### criar index users(base de dados users)
+PUT http://localhost:9200/users
+Content-Type: application/json
+
+{
+  "mappings": {
+    "properties": {
+      "username": { "type": "keyword" },
+      "password": { "type": "text" },
+      "token": { "type": "keyword" }
+    }
+  }
+}
+
+### eliminar index users
+DELETE http://localhost:9200/users
+
+### testar inicializaçao da base de dados
+GET http://localhost:9200/_cat/indices?v
+
+### eliminar todos os dados dentro de groups
+POST http://localhost:9200/groups/_delete_by_query
+Content-Type: application/json
+
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+### eliminar todos os dados dentro de users
+POST http://localhost:9200/users/_delete_by_query
+Content-Type: application/json
+
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+### ver todos os dados dentro de groups
+POST http://localhost:9200/groups/_search
+Content-Type: application/json
+
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+### ver todos os dados dentro de users
+POST http://localhost:9200/users/_search
+Content-Type: application/json
+
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+### adicionar data a base de dados groups
+PUT http://localhost:9200/groups/_doc/group-1
+Content-Type: application/json
+
+{
+  "id": "group-1",
+  "name": "My Favorite Teams",
+  "description": "A collection of my favorite football teams",
+  "token": "123",
+  "teams": [
+    {
+      "teamId": "33",
+      "teamName": "Real Madrid",
+      "stadiumName": "Santiago Bernabeu",
+      "leagueName": "La Liga",
+      "season": 2023
+    }
+  ]
+}
+
+### ver grupos por token
+POST http://localhost:9200/groups/_search
+Content-Type: application/json
+
+{
+  "query": {
+    "match": {
+      "token": "123"
+    }
+  }
+}
+
+### ver grupos por group id
+GET http://localhost:9200/groups/_doc/group-1
+
+### delete group by id
+DELETE http://localhost:9200/groups/_doc/group-1

@@ -1,0 +1,88 @@
+<style>
+    /* Full-screen Background with Blur */
+    body {
+        background-image: url('https://pixy.org/src2/595/5953111.jpg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        color: white;
+        position: relative;
+        min-height: 100vh; /* Ensure full height */
+        margin: 0;
+    }
+
+    body::before {
+        content: "";
+        position: fixed; /* Covers the entire viewport */
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-image: inherit;
+        background-size: inherit;
+        background-position: inherit;
+        background-attachment: inherit;
+        background-repeat: inherit;
+        filter: blur(8px);
+        z-index: -1;
+    }
+
+    .card {
+        background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent for better readability */
+        border: none;
+        border-radius: 10px;
+        padding: 2rem; /* Add padding for better spacing */
+    }
+
+    .display-4 {
+        font-size: 6rem; /* Increase font size */
+        font-weight: 800; /* Bold weight */
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Add shadow for emphasis */
+    }
+
+    .btn-group {
+        display: flex;
+        justify-content: center;
+        gap: 1rem; /* Space between buttons */
+        margin-top: 1rem;
+    }
+
+    .btn {
+        font-size: 1rem;
+        padding: 0.5rem 1.5rem;
+        border-radius: 20px; /* Rounded buttons */
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Add subtle shadow */
+    }
+
+    .lead {
+        font-size: 1.2rem;
+    }
+</style>
+
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center">
+                        <!-- Stand-out 404 -->
+                        <h1 class="display-4 text-danger">404</h1>
+                        <p class="lead">Oops! The page you are looking for does not exist.</p>
+
+                        <!-- Main button -->
+                        <a href="/" class="btn btn-success mb-3">Go Back Home</a>
+
+                        <!-- Helpful links -->
+                        <p>Here are some helpful links:</p>
+                        <div class="btn-group">
+                            <a href="/groups" class="btn btn-success">Groups</a>
+                            <a href="/teams" class="btn btn-success">Teams</a>
+                            <a href="/leagues" class="btn btn-success">Leagues</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

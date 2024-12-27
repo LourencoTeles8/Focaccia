@@ -1,0 +1,644 @@
+openapi: 3.0.0
+info:
+  title: FOCCACIA API
+  version: 1.0.0
+  description: API for managing football clubs, leagues, and user groups.
+servers:
+  - url: http://localhost:3000/api
+    description: Local development server
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+paths:
+  /teams/search:
+    get:
+      summary: Search clubs by name
+      parameters:
+        - name: name
+          in: query
+          required: true
+          description: Name of the club to search for.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response with team data.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    team:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 33
+                        name:
+                          type: string
+                          example: Real Madrid
+                        logo:
+                          type: string
+                          example: https://media.api-sports.io/football/teams/33.png
+                    venue:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: Santiago Bernabeu
+                        city:
+                          type: string
+                          example: Madrid
+                        capacity:
+                          type: integer
+                          example: 81044
+        "400":
+          description: Missing or invalid query parameter.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Team name is required.
+        "404":
+          description: No teams found with the given name.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: No teams found with the given name.
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Failed to fetch team data.
+
+  /teams/details:
+    get:
+      summary: Get detailed information about a team.
+      description: Returns team details, including the team name, image, stadium name, and the leagues the team has participated in.
+      tags:
+        - Teams
+      parameters:
+        - name: name
+          in: query
+          required: true
+          description: The name of the team to retrieve details for.
+          schema:
+            type: string
+            example: Real Madrid
+      responses:
+        '200':
+          description: Successfully retrieved team details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  teamName:
+                    type: string
+                    description: The name of the team.
+                    example: Real Madrid
+                  teamImage:
+                    type: string
+                    description: The URL of the team's logo image.
+                    example: https://media.api-sports.io/football/teams/33.png
+                  stadiumName:
+                    type: string
+                    description: The name of the stadium the team uses.
+                    example: Santiago Bernabéu
+                  leagues:
+                    type: array
+                    description: A list of leagues the team has participated in.
+                    items:
+                      type: object
+                      properties:
+                        leagueName:
+                          type: string
+                          description: The name of the league.
+                          example: La Liga
+                        season:
+                          type: integer
+                          description: The season the team participated in.
+                          example: 2023
+        '400':
+          description: Missing or invalid query parameter.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Team name is required.
+        '404':
+          description: Team not found or no leagues available.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Team not found.
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal Server Error.
+
+  /leagues/search:
+    get:
+      summary: Search leagues by team
+      parameters:
+        - name: team
+          in: query
+          required: true
+          description: ID of the team to search leagues for.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of leagues for the team.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 140
+                    name:
+                      type: string
+                      example: La Liga
+                    season:
+                      type: integer
+                      example: 2023
+        "404":
+          description: No leagues found for the given team ID.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: No leagues found.
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal server error.
+
+  /groups:
+    post:
+      summary: Create a new group
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: My Favorite Teams
+                description:
+                  type: string
+                  example: A collection of my favorite teams.
+      responses:
+        "401":
+          description: Unauthorized (missing or invalid token).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized.
+        "201":
+          description: Group created successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: group-12345
+                  name:
+                    type: string
+                    example: My Favorite Teams
+                  description:
+                    type: string
+                    example: A collection of my favorite teams.
+                  teams:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        teamName:
+                          type: string
+                          example: Real Madrid
+                        stadiumName:
+                          type: string
+                          example: Santiago Bernabeu
+                        leagueName:
+                          type: string
+                          example: La Liga
+                        season:
+                          type: integer
+                          example: 2023
+    get:
+      summary: List all groups
+      security:
+        - bearerAuth: []
+      responses:
+        "401":
+          description: Unauthorized (missing or invalid token).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized.
+        "200":
+          description: List of all groups.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: group-12345
+                    name:
+                      type: string
+                      example: My Favorite Teams
+                    description:
+                      type: string
+                      example: A collection of my favorite teams.
+  /groups/{groupId}:
+    delete:
+        summary: Delete a group by ID
+        description: Deletes a group with the specified ID.
+        security:
+          - bearerAuth: []
+        parameters:
+          - name: groupId
+            in: path
+            required: true
+            description: The ID of the group to delete.
+            schema:
+              type: string
+        responses:
+        "401":
+          description: Unauthorized (missing or invalid token).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized.
+          "204":
+            description: Group successfully deleted.
+          "404":
+            description: Group not found.
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                      example: Group not found
+          "500":
+            description: Internal server error.
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                      example: Internal Server Error
+    get:
+      summary: Get group details
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: groupId
+          in: path
+          required: true
+          description: ID of the group to retrieve.
+          schema:
+            type: string
+      responses:
+        "401":
+          description: Unauthorized (missing or invalid token).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized.
+        "200":
+          description: Group details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: group-1
+                  name:
+                    type: string
+                    example: Champions Group
+                  description:
+                    type: string
+                    example: Top football teams
+                  teams:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        teamName:
+                          type: string
+                          example: Real Madrid
+                        stadiumName:
+                          type: string
+                          example: Santiago Bernabeu
+                        leagueName:
+                          type: string
+                          example: La Liga
+                        season:
+                          type: integer
+                          example: 2023
+        "404":
+          description: Group not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Group not found.
+    put:
+      summary: Edit group name and description
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: groupId
+          in: path
+          required: true
+          description: ID of the group to update.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: My Updated Group
+                description:
+                  type: string
+                  example: Updated description of the group.
+      responses:
+        "401":
+          description: Unauthorized (missing or invalid token).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized.
+        "200":
+          description: Group updated successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: group-12345
+                  name:
+                    type: string
+                    example: My Updated Group
+                  description:
+                    type: string
+                    example: Updated description of the group.
+        "404":
+          description: Group not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Group not found.
+  /groups/{groupId}/teams:
+    post:
+      summary: Add a team to a group
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: groupId
+          in: path
+          required: true
+          description: ID of the group to which the team is added.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                teamId:
+                  type: integer
+                  example: 33
+                leagueId:
+                  type: integer
+                  example: 140
+                season:
+                  type: integer
+                  example: 2023
+      responses:
+        "401":
+          description: Unauthorized (missing or invalid token).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized.
+        "200":
+          description: Team added successfully.
+        "409":
+          description: Team is already in the group.          
+  /groups/{groupId}/teams/{teamId}:
+    delete:
+      summary: Remove a team from a group
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: groupId
+          in: path
+          required: true
+          description: ID of the group to remove the team from.
+          schema:
+            type: string
+        - name: teamId
+          in: path
+          required: true
+          description: ID of the team to be removed.
+          schema:
+            type: integer
+      responses:
+        "401":
+          description: Unauthorized (missing or invalid token).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized.
+        "200":
+          description: Team removed successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: group-12345
+                  name:
+                    type: string
+                    example: My Favorite Teams
+                  description:
+                    type: string
+                    example: A collection of my favorite teams.
+                  teams:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        teamName:
+                          type: string
+                          example: Real Madrid
+                        stadiumName:
+                          type: string
+                          example: Santiago Bernabeu
+                        leagueName:
+                          type: string
+                          example: La Liga
+                        season:
+                          type: integer
+                          example: 2023
+        "404":
+          description: Team not found in the group or group does not exist.
+  /users:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: john_doe
+      responses:
+        "201":
+          description: User registered successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                    example: john_doe
+                  token:
+                    type: string
+                    example: abc123-unique-token
+        "409":
+          description: User already exists.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Username already exists.
+        "400":
+          description: Missing or invalid username.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Username is required.
+
