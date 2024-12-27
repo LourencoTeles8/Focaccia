@@ -26,7 +26,14 @@
 
 ###
 
-<p align="left">-> Clone o repositório (segue-se um exemplo):<br><br>git clone https://github.com/username/FOCCACIA.git<br>cd FOCCACIA<br><br>-> Instale as dependências:<br><br>npm install express<br>npm install dotenv <br><br>Node também é necessário para correr o programa.<br><br>-> Configure as variáveis de ambiente:<br><br>Instalar o seguinte ficheiro para correr o site:   https://www.elastic.co/guide/en/elasticsearch/reference/current/zip-windows.html<br><br>-> Inicie o servidor:<br><br>É necessário antes correr este código na pasta instalada do "elasticsearch":  .\bin\elasticsearch.bat<br>Correr este no terminal do código: node foccacia-server.mjs<br><br>-> Acesse à aplicação no navegador:<br><br>URL Padrão: http://localhost:3000</p>
+<p align="left">-> Clone o repositório (segue-se um exemplo):<br>
+  <br>git clone https://github.com/username/FOCCACIA.git
+  <br>cd FOCCACIA<br>
+  <br>-> Instale as dependências:<br><br>npm install express<br>npm install dotenv <br>
+  <br>Instale o ficheiro .zip em:   https://www.elastic.co/guide/en/elasticsearch/reference/current/zip-windows.html<br>
+  <br>-> Inicie o servidor da base de dados correndo (na pasta instalada do "elasticsearch"):  .\bin\elasticsearch.bat<br>
+  <br>-> Inicie o servidor do website correndo (na pasta Focaccia):  node foccacia-server.mjs<br>
+  <br>-> Acesse à aplicação no navegador:  http://localhost:3000</p>
 
 ###
 
