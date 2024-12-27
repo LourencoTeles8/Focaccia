@@ -53,9 +53,3 @@
 ###
 
 <p align="left">Autores:<br>Lourenço Teles (LourencoTeles)<br>António Seara (kikobangarang)</p>
-
-###
-
-<img src="https://raw.githubusercontent.com/LourencoTeles8/LourencoTeles8/output/snake.svg" alt="Snake animation" />
-
-###
